@@ -48,6 +48,7 @@ export class ProjectList
     this.element.addEventListener('dragover', this.dragOverHandler);
     this.element.addEventListener('dragleave', this.dragLeaveHandler);
     this.element.addEventListener('drop', this.dropHandler);
+    this.element.querySelector('button')!.addEventListener('click', this.clearProjects)
 
     projectState.addListener((projects: Project[]) => {
       const relevantProjects = projects.filter((prj) => {
@@ -61,11 +62,23 @@ export class ProjectList
     });
   }
 
+  @autobind
+  clearProjects() {
+    const type = this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished
+    projectState.clearList(type)
+    this.element.querySelector('ul')!.innerHTML = '';
+
+    const storageData = localStorage.getItem('projects');
+    const storage = storageData ? JSON.parse(storageData) : [];
+    localStorage.setItem('projects', JSON.stringify(storage.filter((pr: Project) => pr.status !== type)))
+  }
+
   renderContent() {
     const listId = `${this.type}-projects-list`;
     this.element.querySelector('ul')!.id = listId;
     this.element.querySelector('h2')!.textContent =
       this.type.toUpperCase() + ' PROJECTS';
+    this.element.querySelector('button')!.textContent = `CLEAR ${this.type.toUpperCase()} TASKS`
   }
 
   private renderProjects() {

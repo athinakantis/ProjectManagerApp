@@ -76,11 +76,8 @@ export class ProjectState extends State<Project> {
     }
   }
 
-  clearProjects() {
-      console.log('clearing')
-    this.projects = [];
-    localStorage.removeItem('projects');
-    console.log(this.projects)
+  clearList(type: ProjectStatus) {
+    this.projects = this.projects.filter(pr => pr.status !== type)
   }
 }
 
@@ -101,6 +98,7 @@ const loadProjects = () => {
       project.comment,
       project.id
     );
+
     if (project.status === ProjectStatus.Finished) {
       projectState.moveProject(project.id, ProjectStatus.Finished);
     }

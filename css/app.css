@@ -58,6 +58,7 @@ button:active {
 .projects {
   margin: 1rem;
   border: 1px solid #ff0062;
+  position: relative;
 }
 
 .projects header {
@@ -92,6 +93,12 @@ button:active {
   padding: 1rem;
   margin: 1rem;
   background: white;
+}
+
+.projects button {
+  background-color: inherit;
+  position: absolute;
+  right: 1rem;
 }
 
 .projects li h2 {
